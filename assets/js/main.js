@@ -11,7 +11,7 @@ $(document).ready(function() {
            console.log(branchId); 
                 return $("#branches")
                 .append("<ul>" + "<button" + " " + "type=" +
-                "button" + " " + "class=" + "branchButton" +
+                "button" + " " + "title=" + branch + " " + "class=" + "branchButton" +
                 " " +  "data-toggle=" + "modal" + " " + "data-target=" + "#treeForm" 
                 + " " + "id=" + branchId + " " + "value=" + branchId +  
                 " " + ">" + branch + "</button>" + "</ul>")   
@@ -60,9 +60,11 @@ postBranch();
 function editBranch() {
 $(document).on('click', '.branchButton', function(event){
     event.preventDefault();
-    
+    var branchText = this.title;
     var currentId = this.id;
     console.log(this.id);
+    console.log(branchText);
+    $("#nameUpdate").attr("placeholder",branchText);
     $(".nameUpdate").attr("id",currentId);
 });
     $(document).on('click', '.nameUpdate', function(event){
@@ -95,7 +97,40 @@ $(document).on('click', '.branchButton', function(event){
 
 editBranch();
 
-
+function deleteBranch() {
+    $(document).on('click', '.branchButton', function(event){
+        event.preventDefault();
+        
+        var currentId = this.id;
+        console.log(this.id);
+        $(".deleteButton").attr("id",currentId);
+    });
+        $(document).on('click', '.deleteButton', function(event){
+            event.preventDefault(); 
+            var deleteId = this.id;  
+            console.log(this.id);
+        axios.delete('http://treeapi.ramonterry.com/api/branches/' + deleteId, {
+                
+        })
+        .then(function (response) {
+         var replaceBranch = response.data.name;
+         console.log(replaceBranch);
+    
+         $("#branches").empty();
+         getRequest();
+            
+            
+      
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        
+    });
+    }
+    
+    
+    deleteBranch();
 
 
 
