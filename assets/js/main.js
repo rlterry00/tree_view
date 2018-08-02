@@ -61,11 +61,16 @@ function editBranch() {
 $(document).on('click', '.branchButton', function(event){
     event.preventDefault();
     
-    var currentId = this.value;
-    var nameUpdate = $(".nameUpdate").val();
-    console.log(this.value);
-    $(".nameUpdate").attr("value",currentId);
-    axios.patch('http://treeapi.ramonterry.com/api/branches/' + currentId, {
+    var currentId = this.id;
+    console.log(this.id);
+    $(".nameUpdate").attr("id",currentId);
+});
+    $(document).on('click', '.nameUpdate', function(event){
+        event.preventDefault(); 
+        var updateId = this.id;  
+        var nameUpdate = $("#nameUpdate").val();
+        console.log(this.id);
+    axios.patch('http://treeapi.ramonterry.com/api/branches/' + updateId, {
         name: nameUpdate
         
         
@@ -74,7 +79,8 @@ $(document).on('click', '.branchButton', function(event){
      var replaceBranch = response.data.name;
      console.log(replaceBranch);
 
-     return $("#branches")
+     $("#branches").empty();
+     getRequest();
         
         
   
@@ -89,10 +95,9 @@ $(document).on('click', '.branchButton', function(event){
 
 editBranch();
 
-$(document).on('click', 'button', function(){
 
 
-})
+
 
 
 });
