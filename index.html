@@ -33,7 +33,28 @@
         <div class="container">
             <div id="tree" class="mt-3">
                 <ul id="branches"></ul>
-            </div>
+                <div id="treeForm" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                  
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                        +<h4 class="modal-title">Branch Updater</h4>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                              <input type="text" placeholder="Optional" class="nameUpdate"><button type="submit">Update Branch Nme</button>
+                              <button type="button" id="deleteButton">Delete</button>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                  
+                    </div>
+                  </div>
         </div>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

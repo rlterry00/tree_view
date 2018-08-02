@@ -7,7 +7,14 @@ $(document).ready(function() {
   
         var result = resData.map(function(a) {
            var branch = a.name;
-                return $("#branches").append("<ul>" + "<button" + " " + "id=#parent>" + branch + "</button>" + "</ul>")   
+           var branchId = a.id;
+           console.log(branchId); 
+                return $("#branches")
+                .append("<ul>" + "<button" + " " + "type=" +
+                "button" + " " + "class=" + "branchButton" +
+                " " +  "data-toggle=" + "modal" + " " + "data-target=" + "#treeForm" 
+                + " " + "id=" + branchId + " " + "value=" + branchId +  
+                " " + ">" + branch + "</button>" + "</ul>")   
             
         }
     );
@@ -21,6 +28,7 @@ $(document).ready(function() {
 }
 
 getRequest();
+
 
 $("#branchSubmit").click(function(event) {
     event.preventDefault();
@@ -47,6 +55,45 @@ function postBranch() {
 postBranch();
 
 })
+
+
+function editBranch() {
+$(document).on('click', '.branchButton', function(event){
+    event.preventDefault();
+    
+    var currentId = this.value;
+    var nameUpdate = $(".nameUpdate").val();
+    console.log(this.value);
+    $(".nameUpdate").attr("value",currentId);
+    axios.patch('http://treeapi.ramonterry.com/api/branches/' + currentId, {
+        name: nameUpdate
+        
+        
+    })
+    .then(function (response) {
+     var replaceBranch = response.data.name;
+     console.log(replaceBranch);
+
+     return $("#branches")
+        
+        
+  
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
+    
+});
+}
+
+
+editBranch();
+
+$(document).on('click', 'button', function(){
+
+
+})
+
 
 });
 
