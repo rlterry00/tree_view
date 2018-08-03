@@ -1,5 +1,6 @@
 $(document).ready(function() {
   
+//  at start load assets from the database
     function getRequest() {
     axios.get('http://treeapi.ramonterry.com/api/branches')
     .then(function(response) {
@@ -12,14 +13,15 @@ $(document).ready(function() {
            var branchChildren = a.children;
            var branchStart = a.range_start;
            var branchEnd = a.range_finish;
-           console.log(newId); 
+            
            function appendGet() {
                 return $("#branches")
                 .append("<ul" + " " + "id=New" + branchId + ">" + "<button" + " " + "type=" +
-                "button" + " " + "title=" + branch + " " + "class=" + "branchButton" +
+                "button" + " " + "title=" + branch + " " + "class='branchButton btn btn-success'" +
                 " " +  "data-toggle=" + "modal" + " " + "data-target=" + "#treeForm" 
                 + " " + "id=" + branchId + " " + "value=" + branchId +  
                 " " + ">" + branch + "</button>" + "</ul>");
+
            }
            appendGet();
            for (var i = 0; i < branchChildren; i++) {
@@ -43,7 +45,7 @@ $(document).ready(function() {
 
 getRequest();
 
-
+// post new branch to the database
 $("#branchSubmit").click(function(event) {
     event.preventDefault();
 function postBranch() {
@@ -55,9 +57,9 @@ function postBranch() {
         
     })
     .then(function (response) {
-     var newBranch = response.data.name;
-     return $("#branches").append("<ul></ul>", newBranch);
-        
+
+       $("#branches").empty();
+       getRequest(); 
         
   
     })
@@ -70,14 +72,13 @@ postBranch();
 
 });
 
-
+// edit branch name from the database
 function editBranch() {
 $(document).on('click', '.branchButton', function(event){
     event.preventDefault();
     var branchText = this.title;
     var currentId = this.id;
-    console.log(this.id);
-    console.log(branchText);
+   
     $("#nameUpdate").attr("placeholder",branchText);
     $(".nameUpdate").attr("id",currentId);
 });
@@ -85,7 +86,7 @@ $(document).on('click', '.branchButton', function(event){
         event.preventDefault(); 
         var updateId = this.id;  
         var nameUpdate = $("#nameUpdate").val();
-        console.log(this.id);
+        
     axios.patch('http://treeapi.ramonterry.com/api/branches/' + updateId, {
         name: nameUpdate
         
@@ -93,7 +94,7 @@ $(document).on('click', '.branchButton', function(event){
     })
     .then(function (response) {
      var replaceBranch = response.data.name;
-     console.log(replaceBranch);
+  
 
      $("#branches").empty();
      getRequest();
@@ -110,13 +111,13 @@ $(document).on('click', '.branchButton', function(event){
 
 
 editBranch();
-
+// add and edit child number from the database
 function editChild() {
     $(document).on('click', '.branchButton', function(event){
         event.preventDefault();
         var currentId = this.id;
         var childValue = 0;
-        console.log(this.id);
+        
         $("#childUpdate").attr("placeholder",childValue);
         $(".childUpdate").attr("id",currentId);
         $(".rangeUpdate").attr("id",currentId);
@@ -129,8 +130,7 @@ function editChild() {
                 alert("Enter value between 0-15");
                 return false;
             }
-            console.log(this.id);
-            console.log(childUpdate);
+         
 
         axios.patch('http://treeapi.ramonterry.com/api/branches/' + updateId, {
             children: childUpdate
@@ -142,7 +142,7 @@ function editChild() {
          var branch = "New" + response.data.id;
          
          
-         console.log(replaceChild);
+         
        
          for (var i = 0; i < replaceChild; i++) {
             var random = Math.floor((Math.random() * 100) + 1);
@@ -157,6 +157,8 @@ function editChild() {
         });
         
     });
+    
+    // add and edit range of random numbers for each child
     $(document).on('click', '.rangeUpdate', function(event){
         event.preventDefault(); 
         var updateId = this.id;  
@@ -166,9 +168,7 @@ function editChild() {
             alert("Enter start value greater than 1 and value greater than 2");
             return false;
         }
-        console.log(this.id);
-        console.log(rangeStart);
-        console.log(rangeEnd);
+       
 
     axios.patch('http://treeapi.ramonterry.com/api/branches/' + updateId, {
         range_start: rangeStart,
@@ -183,8 +183,7 @@ function editChild() {
      var child = response.data.children;
      
      
-     console.log(replaceStart);
-     console.log(replaceEnd);
+   
    
      for (var i = 0; i < child; i++) {
         var random = Math.floor((Math.random() * replaceEnd) + rangeStart);
@@ -205,25 +204,25 @@ function editChild() {
     editChild();
 
     
-
+// delete branch completely from database
 function deleteBranch() {
     $(document).on('click', '.branchButton', function(event){
         event.preventDefault();
         
         var currentId = this.id;
-        console.log(this.id);
+        
         $(".deleteButton").attr("id",currentId);
     });
         $(document).on('click', '.deleteButton', function(event){
             event.preventDefault(); 
             var deleteId = this.id;  
-            console.log(this.id);
+            
         axios.delete('http://treeapi.ramonterry.com/api/branches/' + deleteId, {
                 
         })
         .then(function (response) {
          var replaceBranch = response.data.name;
-         console.log(replaceBranch);
+         
     
          $("#branches").empty();
          getRequest();
