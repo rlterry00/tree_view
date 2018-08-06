@@ -220,8 +220,6 @@ function deleteBranch() {
     var src = new EventSource(urlToChangeStream);
     src.addEventListener('data', function(msg) {
       var data = JSON.parse(msg.data);
-      var type = data.target;
-      console.log(type); // the change object
       
       $("#branches").load(location.href+" #branches>*","");
       getRequest();
